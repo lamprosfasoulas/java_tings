@@ -33,80 +33,134 @@ public class two_zero_four_eight {
 
         @Override
         public void keyPressed(KeyEvent e) {
+           //cunt
             if (gameOn && !gameover()) {
-                    emptyTiles(e.getKeyCode());
+                
+                switch (e.getKeyCode()) {
+                    case 37://left
+                    checkLeft(e.getKeyCode());
+                        break;
+                    
+                    case 38://up
+                    checkUp(e.getKeyCode());
+                        break;
+                    
+                    case 39://right
+                    checkRight(e.getKeyCode());                      
+                        break;
+                    
+                    case 40://down
+                    checkDown(e.getKeyCode());
+                        break;
+                    
+                    default:
+                        break;
+                }
             }
             else if(gameOn && gameover()){
                     
                     endMotheFucka();//Sorry for that its 1 in the morning
             }
-            
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
+            
+            
             randomTile();
             System.out.println(String.valueOf(e.getKeyCode()));
         }
 
     }
-
-    //Recognizing full tiles (just for cognitive complexity and fun)
-    public void emptyTiles(int code){
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[i].length; j++) {
-                if (!board[i][j].getText().isEmpty()) {
-                    switch (code) {
-                        case 37://left
-                            moveLeft(i,j,Integer.parseInt(board[i][j].getText()));
-                            break;
-                        
-                        case 38://up
-                            moveUp(i,j,Integer.parseInt(board[i][j].getText()));
-                            break;
-                        
-                        case 39://right
-                            moveRight(i,j,Integer.parseInt(board[i][j].getText()));
-                            break;
-                        
-                        case 40://down
-                            moveDown(i,j,Integer.parseInt(board[i][j].getText()));
-                            break;
-                        
-                        default:
-                            break;
-                    }
-                    
-                    
-                }
+          
+    public void checkLeft(int code){
+        for (int i = 0; i <= 3; i++) {
+            for (int j = 0; j <= 3; j++) {
+                check_empty_at_position(j, i, code);
             }
         }
     }
 
+    public void checkUp(int code){
+        for (int i = 0; i <= 3; i++) {
+            for (int j = 0; j <= 3; j++) {
+                check_empty_at_position(i, j, code);
+            }
+        }
+    }
+
+    public void checkRight(int code){
+        for (int i = 3; i >= 0; i--) {
+            for (int j = 3; j >= 0; j--) {
+                check_empty_at_position(j, i, code);
+            }
+        }
+    }
+
+    public void checkDown(int code){
+        for (int i = 3; i >= 0; i--) {
+            for (int j = 0; j <=3; j++) {
+                check_empty_at_position(i, j, code);
+            }
+        }
+    }
+    
+    public void check_empty_at_position(int row, int cell,int code){
+
+        if (!board[row][cell].getText().isEmpty()) {
+            switch (code) {
+            case 37://left
+            moveLeft(row,cell,Integer.parseInt(board[row][cell].getText()));
+                break;
+            
+            case 38://up
+            moveUp(row,cell,Integer.parseInt(board[row][cell].getText()));
+                break;
+            
+            case 39://right
+            moveRight(row,cell,Integer.parseInt(board[row][cell].getText()));
+                break;
+            
+            case 40://down
+            moveDown(row,cell,Integer.parseInt(board[row][cell].getText()));
+                break;
+            
+            default:
+                break;
+        }
+        }
+
+        
+    }
+
+
+    
+
+
+
     public void moveLeft(int row,int cell,int tileValue){
-        for (int c = 0; c < cell; c++) {
+        for (int c = 0; c <= cell; c++){
             if (board[row][c].getText().isEmpty()) {
                 moveTile(row, c, tileValue);
                 resetTile(row, cell);
                 break;
             }
-            else if(!board[row][c].getText().isEmpty() && board[row][cell].getText().equals(board[row][c].getText())){
+            else if(!board[row][c].getText().isEmpty() && !board[row][c].equals(board[row][cell]) && board[row][cell].getText().equals(board[row][c].getText())){
                 updateTile(row, c, tileValue);  
                 resetTile(row, cell);
                 break;
             }
-            
         }
     }
 
     public void moveRight(int row,int cell,int tileValue){
-        for (int c = 3; c > cell; c--) {
+        for (int c = 3; c >= cell; c--) {
             if (board[row][c].getText().isEmpty()) {
                 moveTile(row, c, tileValue);
                 resetTile(row, cell);
                 break;
             }
-            else if(!board[row][c].getText().isEmpty() && board[row][cell].getText().equals(board[row][c].getText())){
+            else if(!board[row][c].getText().isEmpty() && !board[row][c].equals(board[row][cell]) && board[row][cell].getText().equals(board[row][c].getText())){
                 updateTile(row, c, tileValue);  
                 resetTile(row, cell);
                 break;
@@ -116,13 +170,13 @@ public class two_zero_four_eight {
     }
 
     public void moveUp(int row,int cell,int tileValue){
-        for (int r = 0; r < row; r++) {
+        for (int r = 0; r <= row; r++) {
             if (board[r][cell].getText().isEmpty()) {
                 moveTile(r, cell, tileValue);
                 resetTile(row, cell);
                 break;
             }
-            else if(!board[r][cell].getText().isEmpty() && board[row][cell].getText().equals(board[r][cell].getText())){
+            else if(!board[r][cell].getText().isEmpty() && !board[r][cell].equals(board[row][cell]) && board[row][cell].getText().equals(board[r][cell].getText())){
                 updateTile(r, cell, tileValue);  
                 resetTile(row, cell);
                 break;
@@ -132,13 +186,13 @@ public class two_zero_four_eight {
     }
 
     public void moveDown(int row,int cell,int tileValue){
-        for (int r = 3; r > row; r--) {
+        for (int r = 3; r >= row; r--) {
             if (board[r][cell].getText().isEmpty()) {
                 moveTile(r, cell, tileValue);
                 resetTile(row, cell);
                 break;
             }
-            else if(!board[r][cell].getText().isEmpty() && board[row][cell].getText().equals(board[r][cell].getText())){
+            else if(!board[r][cell].getText().isEmpty() && !board[r][cell].equals(board[row][cell]) && board[row][cell].getText().equals(board[r][cell].getText())){
                 updateTile(r, cell, tileValue);  
                 resetTile(row, cell);
                 break;
@@ -224,7 +278,7 @@ public class two_zero_four_eight {
     //Make reset mathod
     public void resetTile(int row,int cell){
         board[row][cell].setText("");
-        board[row][cell].setBackground(Color.GRAY);;
+        board[row][cell].setBackground(Color.GRAY);
     }
     
     public void moveTile(int row,int cell,int tileToBeMovedText){
